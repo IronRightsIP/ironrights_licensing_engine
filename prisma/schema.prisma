@@ -1,0 +1,8 @@
+datasource db {
+ provider = "mongodb"
+ url      = env("DATABASE_URL")
+}
+model License {
+ id String @id @default(auto())
+ metadata Json
+}
