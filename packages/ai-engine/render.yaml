@@ -1,0 +1,11 @@
+
+services:
+  - type: web
+    name: ironrights-ai-engine
+    env: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: ./start.sh
+    envVars:
+      - key: OPENAI_API_KEY
+        sync: false
