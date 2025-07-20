@@ -1,24 +1,25 @@
 # Use official Python 3.11 slim image
 FROM python:3.11-slim
 
-# Install Rust toolchain dependencies
-RUN apt-get update && apt-get install -y curl build-essential
+# Use an official Python image
+FROM python:3.10-slim
 
-# Install rustup and Rust stable
-RUN curl https://sh.rustup.rs -sSf | sh -s -- -y
-ENV PATH="/root/.cargo/bin:$PATH"
-RUN rustup default stable
+# Set environment variables
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
 
+# Create app directory
 WORKDIR /app
 
-# Copy and install Python dependencies
-COPY requirements.txt .
+# Copy files
+COPY . .
+
+# Install dependencies
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
-# Copy project files
-COPY . .
+# Expose the FastAPI port
+EXPOSE 8000
 
-# Expose port and run FastAPI
-EXPOSE 8080
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8080"]
+# Start the server
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
